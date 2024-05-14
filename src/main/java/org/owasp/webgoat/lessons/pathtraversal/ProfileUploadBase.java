@@ -39,6 +39,7 @@ public class ProfileUploadBase extends AssignmentEndpoint {
     File uploadDirectory = cleanupAndCreateDirectoryForUser();
 
     try {
+      ensurePathIsRelativeToDest(uploadDirectory, fullName);
       var uploadedFile = new File(uploadDirectory, fullName);
       uploadedFile.createNewFile();
       FileCopyUtils.copy(file.getBytes(), uploadedFile);
@@ -54,6 +55,28 @@ public class ProfileUploadBase extends AssignmentEndpoint {
     } catch (IOException e) {
       return failed(this).output(e.getMessage()).build();
     }
+  }
+
+  private static void ensurePathIsRelativeToDest(File dest, String path) {
+    File file = new File(dest, path);
+    String destCanonicalPath;
+    String fileCanonicalPath;
+  
+    try {
+      destCanonicalPath = dest.getCanonicalPath();
+      fileCanonicalPath = file.getCanonicalPath();
+    } catch (IOException e) {
+      throw new RuntimeException("Potential directory traversal attempt", e);
+    }
+  
+    if (!fileCanonicalPath.startsWith(destCanonicalPath + File.separator)) {
+      throw new RuntimeException("Potential directory traversal attempt");
+    }
+  }
+
+
+  private static void ensurePathIsRelativeToDest(String dest, String path) {
+    ensurePathIsRelativeToDest(new File(dest), path);
   }
 
   @SneakyThrows
