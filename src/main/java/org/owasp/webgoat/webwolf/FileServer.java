@@ -86,7 +86,7 @@ public class FileServer {
     String username = authentication.getName();
     var destinationDir = new File(fileLocation, username);
     destinationDir.mkdirs();
-    myFile.transferTo(new File(destinationDir, myFile.getOriginalFilename()));
+    myFile.transferTo(new File(destinationDir, String.valueOf(myFile.getOriginalFilename()).replaceAll("([/\\\\:*?\"<>|])|(^\\s)|([.\\s]$)", "_").replaceAll("\0", "")));
     log.debug("File saved to {}", new File(destinationDir, myFile.getOriginalFilename()));
 
     return new ModelAndView(
