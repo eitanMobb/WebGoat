@@ -55,6 +55,7 @@ import org.thymeleaf.IEngineConfiguration;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
 import org.thymeleaf.templateresource.ITemplateResource;
 import org.thymeleaf.templateresource.StringTemplateResource;
+import org.springframework.web.util.HtmlUtils;
 
 /**
  * Thymeleaf resolver for AsciiDoc used in the lesson, can be used as follows inside a lesson file:
@@ -161,7 +162,7 @@ public class AsciiDoctorTemplateResolver extends FileTemplateResolver {
     } else {
       String langHeader = request.getHeader(Headers.ACCEPT_LANGUAGE_STRING);
       if (null != langHeader) {
-        log.debug("browser locale {}", langHeader);
+        log.debug("browser locale {}", HtmlUtils.htmlEscape(String.valueOf(langHeader).replace("\n", "").replace("\r", "")));
         return langHeader.substring(0, 2);
       } else {
         log.debug("browser default english");
