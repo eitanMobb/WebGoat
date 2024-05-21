@@ -48,7 +48,7 @@ public class VulnerableTaskHolder implements Serializable {
 
     // do something with the data
     log.info("restoring task: {}", taskName);
-    log.info("restoring time: {}", requestedExecutionTime);
+    log.info("restoring time: {}", HtmlUtils.htmlEscape(String.valueOf(requestedExecutionTime).replace("\n", "").replace("\r", "")));
 
     if (requestedExecutionTime != null
         && (requestedExecutionTime.isBefore(LocalDateTime.now().minusMinutes(10))
