@@ -75,7 +75,7 @@ function getComments(field) {
             var comment = html.replace('USER', result[i].user);
             comment = comment.replace('DATETIME', result[i].dateTime);
             comment = comment.replace('COMMENT', result[i].text);
-            $(field).append(comment);
+            $(field).append(DOMPurify.sanitize(comment));
         }
 
     });
