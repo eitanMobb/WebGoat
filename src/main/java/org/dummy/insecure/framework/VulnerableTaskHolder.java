@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.util.HtmlUtils;
 
 @Slf4j
 // TODO move back to lesson
@@ -47,7 +48,7 @@ public class VulnerableTaskHolder implements Serializable {
 
     // do something with the data
     log.info("restoring task: {}", taskName);
-    log.info("restoring time: {}", requestedExecutionTime);
+    log.info("restoring time: {}", HtmlUtils.htmlEscape(String.valueOf(requestedExecutionTime).replace("\n", "").replace("\r", "")));
 
     if (requestedExecutionTime != null
         && (requestedExecutionTime.isBefore(LocalDateTime.now().minusMinutes(10))
