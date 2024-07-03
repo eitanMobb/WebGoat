@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.util.HtmlUtils;
 
 @Slf4j
 // TODO move back to lesson
@@ -47,7 +48,7 @@ public class VulnerableTaskHolder implements Serializable {
 
     // do something with the data
     log.info("restoring task: {}", taskName);
-    log.info("restoring time: {}", requestedExecutionTime);
+    log.info("restoring time: {}", HtmlUtils.htmlEscape(String.valueOf(requestedExecutionTime).replace("\n", "").replace("\r", "")));
 
     if (requestedExecutionTime != null
         && (requestedExecutionTime.isBefore(LocalDateTime.now().minusMinutes(10))
@@ -60,7 +61,7 @@ public class VulnerableTaskHolder implements Serializable {
     // condition is here to prevent you from destroying the goat altogether
     if ((taskAction.startsWith("sleep") || taskAction.startsWith("ping"))
         && taskAction.length() < 22) {
-      log.info("about to execute: {}", taskAction);
+      log.info("about to execute: {}", HtmlUtils.htmlEscape(String.valueOf(taskAction).replace("\n", "").replace("\r", "")));
       try {
         Process p = Runtime.getRuntime().exec(taskAction);
         BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
