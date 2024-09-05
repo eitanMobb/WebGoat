@@ -48,6 +48,9 @@ public class SSRFTask2 extends AssignmentEndpoint {
   protected AttackResult furBall(String url) {
     if (url.matches("http://ifconfig\\.pro")) {
       String html;
+      if (!(url).toString().startsWith("https://webgoat.com/") && !(url).toString().startsWith("https://test.com/") && !(url).toString().startsWith("https://testing.test3.com/")) {
+        throw new RuntimeException("Potential SSRF attempt");
+      }
       try (InputStream in = new URL(url).openStream()) {
         html =
             new String(in.readAllBytes(), StandardCharsets.UTF_8)
