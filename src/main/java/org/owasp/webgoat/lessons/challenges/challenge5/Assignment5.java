@@ -59,9 +59,8 @@ public class Assignment5 extends AssignmentEndpoint {
           connection.prepareStatement(
               "select password from challenge_users where userid = '"
                   + username_login
-                  + "' and password = '"
-                  + password_login
-                  + "'");
+                  + "' and password = ?");
+      statement.setString(1, password_login);
       ResultSet resultSet = statement.executeQuery();
 
       if (resultSet.next()) {
